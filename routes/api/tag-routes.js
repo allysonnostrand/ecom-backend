@@ -5,10 +5,10 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 router.get('/', (req, res) => {
   // find all tags
-  Tag.findAll(req.params.id, {
+  Tag.findAll({
     include: [{
       model: Product,
-      include: [ProductTag]
+      attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
     }]
   }).then(dbTags => {
     res.json(dbTags)
@@ -20,8 +20,8 @@ router.get('/:id', (req, res) => {
   // find a single tag by its `id`
   Tag.findByPk(req.params.id, {
     include: [{
-      model:Product,
-      include: [ProductTag]
+      model: Product,
+      attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
     }]
   }).then(dbTag => {
     res.json(dbTag)
