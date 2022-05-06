@@ -6,9 +6,14 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // get all products
 router.get('/', (req, res) => {
   // find all products
-  Product.findAll(req.params.id, {
+  Product.findAll({
     include: [{
-      model: Category, Tag
+      model: Category,
+      attributes: ['id', 'category_name']
+    }],
+    include: [{
+      model: Tag,
+      attributes: ['id', 'tag_name']
     }]
   }).then(dbProducts => {
     res.json(dbProducts)
@@ -20,8 +25,13 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   // find a single product by its `id`
   Product.findByPk(req.params.id, {
-    include:[{
-      model: Category, Tag
+    include: [{
+      model: Category,
+      attributes: ['id', 'category_name']
+    }],
+    include: [{
+      model: Tag,
+      attributes: ['id', 'tag_name']
     }]
   }).then(dbProduct => {
     res.json(dbProduct)
@@ -105,6 +115,13 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  Product.destroy({
+    where: {
+      id: req.params.id
+    }
+  }).then(deleteProduct => {
+    res.json(deleteProduct)
+  })
 });
 
 module.exports = router;
