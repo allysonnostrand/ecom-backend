@@ -6,7 +6,10 @@ const { Tag, Product, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // find all tags
   Tag.findAll(req.params.id, {
-    include: [{}]
+    include: [{
+      model: Product,
+      include: [ProductTag]
+    }]
   }).then(dbTags => {
     res.json(dbTags)
   })
@@ -16,7 +19,10 @@ router.get('/', (req, res) => {
 router.get('/:id', (req, res) => {
   // find a single tag by its `id`
   Tag.findByPk(req.params.id, {
-    include: [{}]
+    include: [{
+      model:Product,
+      include: [ProductTag]
+    }]
   }).then(dbTag => {
     res.json(dbTag)
   })
